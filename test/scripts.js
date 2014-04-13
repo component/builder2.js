@@ -44,6 +44,11 @@ describe('js-scripts', function () {
     js.should.not.include("require('component/emitter')")
     js.should.not.include("require('./something')")
 
+    js.should.not.include('require("emitter")')
+    js.should.not.include('require("component-emitter")')
+    js.should.not.include('require("component/emitter")')
+    js.should.not.include('require("./something")')
+
     js.should.include("component~emitter@")
   })
 
@@ -75,6 +80,11 @@ describe('js-scripts -dev', function () {
     js.should.not.include("require('component-emitter')")
     js.should.not.include("require('component/emitter')")
     js.should.not.include("require('./something')")
+
+    js.should.not.include('require("emitter")')
+    js.should.not.include('require("component-emitter")')
+    js.should.not.include('require("component/emitter")')
+    js.should.not.include('require("./something")')
   })
 
   it('should execute', function () {
@@ -103,6 +113,11 @@ describe('js-main', function () {
     js.should.not.include("require('./one.js')")
     js.should.not.include("require('./two')")
     js.should.not.include("require('./two.js')")
+
+    js.should.not.include('require("./one")')
+    js.should.not.include('require("./one.js")')
+    js.should.not.include('require("./two")')
+    js.should.not.include('require("./two.js")')
   })
 
   it('should execute', function () {

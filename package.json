@@ -1,7 +1,7 @@
 {
-  "name": "component-builder",
+  "name": "component-builder-fix",
   "description": "builder for component",
-  "version": "1.1.6",
+  "version": "1.1.8-fix",
   "author": {
     "name": "Jonathan Ong",
     "email": "me@jongleberry.com",

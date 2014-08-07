@@ -44,6 +44,11 @@ describe('js-scripts', function () {
     js.should.not.include("require('component/emitter')")
     js.should.not.include("require('./something')")
 
+    js.should.not.include('require("emitter")')
+    js.should.not.include('require("component-emitter")')
+    js.should.not.include('require("component/emitter")')
+    js.should.not.include('require("./something")')
+
     js.should.include("component~emitter@")
   })
 
@@ -75,6 +80,11 @@ describe('js-scripts -dev', function () {
     js.should.not.include("require('component-emitter')")
     js.should.not.include("require('component/emitter')")
     js.should.not.include("require('./something')")
+
+    js.should.not.include('require("emitter")')
+    js.should.not.include('require("component-emitter")')
+    js.should.not.include('require("component/emitter")')
+    js.should.not.include('require("./something")')
   })
 
   it('should execute', function () {
@@ -103,6 +113,11 @@ describe('js-main', function () {
     js.should.not.include("require('./one.js')")
     js.should.not.include("require('./two')")
     js.should.not.include("require('./two.js')")
+
+    js.should.not.include('require("./one")')
+    js.should.not.include('require("./one.js")')
+    js.should.not.include('require("./two")')
+    js.should.not.include('require("./two.js")')
   })
 
   it('should execute', function () {
@@ -422,6 +437,34 @@ describe('js-page.js', function () {
     var ctx = vm.createContext();
     vm.runInContext(js, ctx);
     vm.runInContext('require("js-page.js")', ctx);
+  })
+})
+
+describe('js-locals', function () {
+  var tree;
+  var js = Builder.require;
+
+  it('should install', co(function* () {
+    tree = yield* resolve(fixture('js-locals'), options);
+  }))
+
+  it('should build', co(function* () {
+    js += yield build(tree).end();
+  }))
+
+  it('should rewrite requires for files inside locals', function  () {
+    js.should.not.include("require('subcomponent-1')");
+    js.should.not.include('require("subcomponent-1")');
+    js.should.not.include("require('subcomponent-1/hello')");
+    js.should.not.include('require("subcomponent-1/hello")');
+    
+    js.should.include('require("./subcomponents/subcomponent-1")');
+    js.should.include('require("./subcomponents/subcomponent-1/hello")');
+  })
+
+  it('should execute', function () {
+    var ctx = vm.createContext();
+    vm.runInContext(js, ctx);
   })
 })
 
